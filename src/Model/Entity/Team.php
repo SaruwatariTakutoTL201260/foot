@@ -6,17 +6,19 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * League Entity
+ * Team Entity
  *
  * @property int $id
- * @property int $country_id
- * @property string $name
+ * @property int $league_id
+ * @property string|null $name
+ * @property string|null $emblem
+ * @property string|null $studium
  * @property \Cake\I18n\FrozenTime|null $modified
  * @property bool $is_deleted
  *
- * @property \App\Model\Entity\Country $country
+ * @property \App\Model\Entity\League $league
  */
-class League extends Entity
+class Team extends Entity
 {
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().

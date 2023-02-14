@@ -28,7 +28,7 @@ class CreateCountries extends AbstractMigration
                 'comment' => '国名',
                 'default' => null,
                 'limit' => 255,
-                'null' => false,
+                'null' => true,
             ])
             ->addColumn('modified', 'datetime', [
                 'comment' => 'データ更新日(Y-m-d H:i:s形式)',

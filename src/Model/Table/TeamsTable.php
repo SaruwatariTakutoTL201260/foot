@@ -10,29 +10,28 @@ use Cake\Validation\Validator;
 use Cake\Database\Expression\QueryExpression;
 use App\Constant\CodeConstant;
 
-
 /**
- * Leagues Model
+ * Teams Model
  *
- * @property \App\Model\Table\CountriesTable&\Cake\ORM\Association\BelongsTo $Countries
+ * @property \App\Model\Table\LeaguesTable&\Cake\ORM\Association\BelongsTo $Leagues
  *
- * @method \App\Model\Entity\League newEmptyEntity()
- * @method \App\Model\Entity\League newEntity(array $data, array $options = [])
- * @method \App\Model\Entity\League[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\League get($primaryKey, $options = [])
- * @method \App\Model\Entity\League findOrCreate($search, ?callable $callback = null, $options = [])
- * @method \App\Model\Entity\League patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \App\Model\Entity\League[] patchEntities(iterable $entities, array $data, array $options = [])
- * @method \App\Model\Entity\League|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\League saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\League[]|\Cake\Datasource\ResultSetInterface|false saveMany(iterable $entities, $options = [])
- * @method \App\Model\Entity\League[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, $options = [])
- * @method \App\Model\Entity\League[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
- * @method \App\Model\Entity\League[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
+ * @method \App\Model\Entity\Team newEmptyEntity()
+ * @method \App\Model\Entity\Team newEntity(array $data, array $options = [])
+ * @method \App\Model\Entity\Team[] newEntities(array $data, array $options = [])
+ * @method \App\Model\Entity\Team get($primaryKey, $options = [])
+ * @method \App\Model\Entity\Team findOrCreate($search, ?callable $callback = null, $options = [])
+ * @method \App\Model\Entity\Team patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method \App\Model\Entity\Team[] patchEntities(iterable $entities, array $data, array $options = [])
+ * @method \App\Model\Entity\Team|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\Team saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\Team[]|\Cake\Datasource\ResultSetInterface|false saveMany(iterable $entities, $options = [])
+ * @method \App\Model\Entity\Team[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, $options = [])
+ * @method \App\Model\Entity\Team[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
+ * @method \App\Model\Entity\Team[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
  *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
-class LeaguesTable extends Table
+class TeamsTable extends Table
 {
     /**
      * Initialize method
@@ -44,14 +43,14 @@ class LeaguesTable extends Table
     {
         parent::initialize($config);
 
-        $this->setTable('leagues');
+        $this->setTable('teams');
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
 
-        $this->belongsTo('Countries', [
-            'foreignKey' => 'country_id',
+        $this->belongsTo('Leagues', [
+            'foreignKey' => 'league_id',
             'joinType' => 'INNER',
         ]);
     }
@@ -65,12 +64,21 @@ class LeaguesTable extends Table
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->notEmptyString('country_id');
+            ->notEmptyString('league_id');
 
         $validator
             ->scalar('name')
             ->maxLength('name', 255)
             ->allowEmptyString('name');
+
+        $validator
+            ->scalar('emblem')
+            ->allowEmptyString('emblem');
+
+        $validator
+            ->scalar('studium')
+            ->maxLength('studium', 255)
+            ->allowEmptyString('studium');
 
         $validator
             ->boolean('is_deleted')
@@ -88,13 +96,13 @@ class LeaguesTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->existsIn('country_id', 'Countries'), ['errorField' => 'country_id']);
+        $rules->add($rules->existsIn('league_id', 'Leagues'), ['errorField' => 'league_id']);
 
         return $rules;
     }
 
     /**
-     * ID指定リーグカスタムファインダー
+     * ID指定チームカスタムファインダー
      * 
      * @param \Cake\ORM\Query $query ベースクエリ
      * @param array $options パラメータ
@@ -103,12 +111,12 @@ class LeaguesTable extends Table
     public function findById(Query $query, array $options=[]): Query
     {
         return $query->where(function (QueryExpression $exp) use ($options) {
-            return $exp->eq('Leagues.id', $options['id']);
+            return $exp->eq('Teams.id', $options['id']);
         });
     }
 
     /**
-     * 有効データ指定リーグカスタムファインダー
+     * 有効データ指定チームカスタムファインダー
      * 
      * @param \Cake\ORM\Query $query ベースクエリ
      * @param array $options パラメータ
@@ -117,12 +125,12 @@ class LeaguesTable extends Table
     public function findActive(Query $query, array $options=[]): Query
     {
         return $query->where(function (QueryExpression $exp) use ($options) {
-            return $exp->eq('Leagues.is_deleted', CodeConstant::NOT_DELETED);
+            return $exp->eq('Teams.is_deleted', CodeConstant::NOT_DELETED);
         });
     }
 
     /**
-     * リーグ名指定カスタムファインダー
+     * チーム名指定カスタムファインダー
      * 
      * @param \Cake\ORM\Query $query ベースクエリ
      * @param array $options パラメータ
@@ -131,7 +139,7 @@ class LeaguesTable extends Table
     public function findByName(Query $query, array $options=[]): Query
     {
         return $query->where(function (QueryExpression $exp) use ($options) {
-            return $exp->eq('Leagues.name', $options['name']);
+            return $exp->eq('Teams.name', $options['name']);
         });
     }
 
@@ -142,26 +150,26 @@ class LeaguesTable extends Table
      * @param array $options パラメータ
      * @return \Cake\ORM\Query 生成したクエリ
      */
-    public function findByCountryId(Query $query, array $options=[]): Query
+    public function findByLeagueId(Query $query, array $options=[]): Query
     {
         return $query->where(function (QueryExpression $exp) use ($options) {
-            return $exp->eq('Leagues.country_id', $options['country_id']);
+            return $exp->eq('Teams.league_id', $options['league_id']);
         });
     }
 
     /**
-     * CountriesとのContain
+     * LeaguesとのContain
      *
-     * 条件：Countriesテーブルのis_deletedがtrue(削除フラグが有効)の場合
+     * 条件：Leaguesテーブルのis_deletedがtrue(削除フラグが有効)の場合
      * generateQueryのベースクエリに上記をデフォルトで追加
      *
      * @param \Cake\ORM\Query $query ベースクエリ
      * @return \Cake\ORM\Query 生成したクエリ
      */
-    public function findContainCountries(Query $query): Query
+    public function findContainLeagues(Query $query): Query
     {
-        return $query->contain('Countries', function (Query $q) {
-            return $q->where(['Countries.is_deleted' => 0]);
+        return $query->contain('Leagues', function (Query $q) {
+            return $q->where(['Leagues.is_deleted' => 0]);
         });
     }
 }

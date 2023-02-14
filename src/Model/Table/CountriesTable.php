@@ -58,9 +58,8 @@ class CountriesTable extends Table
         $validator
             ->scalar('name')
             ->maxLength('name', 255)
-            ->requirePresence('name', 'create')
-            ->notEmptyString('name');
-
+            ->allowEmptyString('name');
+            
         $validator
             ->boolean('is_deleted')
             ->notEmptyString('is_deleted');

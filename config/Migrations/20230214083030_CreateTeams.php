@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 use Migrations\AbstractMigration;
 
-class CreateLeagues extends AbstractMigration
+class CreateTeams extends AbstractMigration
 {
     public $autoId = false;
 
@@ -16,7 +16,7 @@ class CreateLeagues extends AbstractMigration
      */
     public function change(): void
     {
-        $table = $this->table('leagues')
+        $table = $this->table('teams')
             ->addColumn('id', 'biginteger', [
                 'autoIncrement' => true,
                 'comment' => 'ID',
@@ -24,13 +24,24 @@ class CreateLeagues extends AbstractMigration
                 'signed' => false,
             ])
             ->addPrimaryKey(['id'])
-            ->addColumn('country_id', 'biginteger', [
-                'comment' => '国ID',
+            ->addColumn('league_id', 'biginteger', [
+                'comment' => 'リーグID',
                 'null' => false,
                 'signed' => false,
             ])
             ->addColumn('name', 'string', [
                 'comment' => '国名',
+                'default' => null,
+                'limit' => 255,
+                'null' => true,
+            ])
+            ->addColumn('emblem', 'text', [
+                'comment' => 'エンブレム',
+                'default' => null,
+                'null' => true,
+            ])
+            ->addColumn('studium', 'string', [
+                'comment' => 'スタジアム',
                 'default' => null,
                 'limit' => 255,
                 'null' => true,
