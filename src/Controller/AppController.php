@@ -16,7 +16,11 @@ declare(strict_types=1);
  */
 namespace App\Controller;
 
+use App\Traits\LoggerTrait;
 use Cake\Controller\Controller;
+use Cake\Event\EventInterface;
+use Cake\Http\Response;
+
 
 /**
  * Application Controller
@@ -28,6 +32,9 @@ use Cake\Controller\Controller;
  */
 class AppController extends Controller
 {
+    // Trait設定
+    use LoggerTrait;
+
     /**
      * Initialization hook method.
      *
@@ -49,5 +56,16 @@ class AppController extends Controller
          * see https://book.cakephp.org/4/en/controllers/components/form-protection.html
          */
         //$this->loadComponent('FormProtection');
+    }
+
+    /**
+     * 前処理
+     *
+     * @param \Cake\Event\EventInterface $event イベント
+     * @return Response|void|null
+     */
+    public function beforeFilter(EventInterface $event)
+    {
+        parent::beforeFilter($event);
     }
 }
