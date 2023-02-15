@@ -116,6 +116,20 @@ class TeamsTable extends Table
     }
 
     /**
+     * IDリスト指定チームカスタムファインダー
+     * 
+     * @param \Cake\ORM\Query $query ベースクエリ
+     * @param array $options パラメータ
+     * @return \Cake\ORM\Query 生成したクエリ
+     */
+    public function findByIdList(Query $query, array $options=[]): Query
+    {
+        return $query->where(function (QueryExpression $exp) use ($options) {
+            return $exp->in('Teams.id', $options['id_list']);
+        });
+    }
+
+    /**
      * 有効データ指定チームカスタムファインダー
      * 
      * @param \Cake\ORM\Query $query ベースクエリ
@@ -144,7 +158,7 @@ class TeamsTable extends Table
     }
 
     /**
-     * 国ID指定カスタムファインダー
+     * リーグID指定カスタムファインダー
      * 
      * @param \Cake\ORM\Query $query ベースクエリ
      * @param array $options パラメータ

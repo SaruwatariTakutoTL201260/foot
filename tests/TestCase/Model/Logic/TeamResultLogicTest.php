@@ -4,25 +4,25 @@ declare(strict_types=1);
 namespace App\Test\TestCass\Model\Logic;
 
 use App\Library\AssertionLibrary;
-use App\Model\Logic\TeamLogic;
-use App\Model\Table\TeamsTable;
+use App\Model\Logic\TeamResultLogic;
+use App\Model\Table\TeamResultsTable;
 use Cake\TestSuite\TestCase;
 
 /**
- * TeamLogicTest
+ * TeamResultLogicTest
  *
  * @package App\Test\TestCase\Model\Logic
  */
-class TeamLogicTest extends TestCase
+class TeamResultLogicTest extends TestCase
 {
-    private TeamLogic $logic;
+    private TeamResultLogic $logic;
 
     /**
      * Test subject
      *
-     * @var \App\Model\Table\TeamsTable
+     * @var \App\Model\Table\TeamResultsTable
      */
-    protected $Teams;
+    protected $TeamResults;
 
     /**
      * Fixtures
@@ -30,7 +30,7 @@ class TeamLogicTest extends TestCase
      * @var array<string>
      */
     protected $fixtures = [
-        'app.Leagues',
+        'app.TeamResults',
         'app.Teams',
     ];
 
@@ -43,9 +43,9 @@ class TeamLogicTest extends TestCase
     {
         parent::setUp();
 
-        $config = $this->getTableLocator()->exists('Teams') ? [] : ['className' => TeamsTable::class];
-        $this->Teams = $this->getTableLocator()->get('Teams', $config);
-        $this->logic = new TeamLogic();
+        $config = $this->getTableLocator()->exists('TeamResults') ? [] : ['className' => TeamResultsTable::class];
+        $this->TeamResults = $this->getTableLocator()->get('TeamResults', $config);
+        $this->logic = new TeamResultLogic();
     }
 
     /**
@@ -55,7 +55,7 @@ class TeamLogicTest extends TestCase
      */
     public function tearDown(): void
     {
-        unset($this->Teams);
+        unset($this->TeamResults);
 
         parent::tearDown();
     }
@@ -73,47 +73,46 @@ class TeamLogicTest extends TestCase
         $queryString = AssertionLibrary::getBindingQuery($query);
 
         $this->assertRegExpSql(
-            'Teams.id = 1',
+            'TeamResults.id = 1',
             $queryString,
             true
         );
     }
 
     /**
-     * 条件クエリ生成処理テスト-byName
+     * 条件クエリ生成処理テスト-byMatchDate
      * 
      * @return void
      */
-    public function testGenerateCoundiotnByName(): void
+    public function testGenerateCoundiotnByMatchDate(): void
     {
         $query = $this->logic->generateQuery([
-            'name' => 'testName',
+            'match_date' => '2023-02-14 20:07:23',
         ]);
 
         $queryString = AssertionLibrary::getBindingQuery($query);
 
-        $this->assertRegExpSql(
-            "Teams.name = 'testName'",
+        $this->assertTextContains(
+            "TeamResults.match_date < '2023-02-14 20:07:23'",
             $queryString,
-            true
         );
     }
 
     /**
-     * 条件クエリ生成処理テスト-byLeagueId
+     * 条件クエリ生成処理テスト-byTeamId
      * 
      * @return void
      */
-    public function testGenerateCoundiotnByCountryId(): void
+    public function testGenerateCoundiotnByTeamId(): void
     {
         $query = $this->logic->generateQuery([
-            'league_id' => 1,
+            'team_id' => 1,
         ]);
 
         $queryString = AssertionLibrary::getBindingQuery($query);
 
         $this->assertRegExpSql(
-            "Teams.league_id = 1",
+            "TeamResults.team_id = 1",
             $queryString,
             true
         );
@@ -125,6 +124,21 @@ class TeamLogicTest extends TestCase
      * @return void
      */
     public function testFetchDataListSuccess(): void
+    {
+        $result = $this->logic->fetchDataList([
+            'match_date' => '2023-02-14 20:07:24',
+        ]);
+
+        $this->assertIsArray($result);
+        $this->assertEquals('200', $result['code']);
+    }
+
+    /**
+     * チーム一覧取得処理テスト-200
+     * 
+     * @return void
+     */
+    public function testFetchDataListSuccessByMatchDate(): void
     {
         $result = $this->logic->fetchDataList([
             'id' => 1,
@@ -142,21 +156,6 @@ class TeamLogicTest extends TestCase
     public function testFetchDataListSuccessEmpty(): void
     {
         $result = $this->logic->fetchDataList([]);
-
-        $this->assertIsArray($result);
-        $this->assertEquals('200', $result['code']);
-    }
-
-    /**
-     * チーム一覧取得処理テスト-200
-     * 
-     * @return void
-     */
-    public function testFetchDataListSuccessByIdList(): void
-    {
-        $result = $this->logic->fetchDataList([
-            'id_list' => [1,2],
-        ]);
 
         $this->assertIsArray($result);
         $this->assertEquals('200', $result['code']);
@@ -185,11 +184,11 @@ class TeamLogicTest extends TestCase
     public function testFetchDataSuccess(): void
     {
         $result = $this->logic->fetchData([
-            'name' => 'testName',
+            'match_date' => '2023-02-14 20:07:24',
         ]);
 
         $this->assertIsArray($result);
-        $this->assertEquals('testName', $result['data']['name']);
+        $this->assertEquals('200', $result['code']);
     }
 
     /**

@@ -3,21 +3,21 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Model\Table;
 
-use App\Model\Table\TeamsTable;
+use App\Model\Table\TeamResultsTable;
 use Cake\TestSuite\TestCase;
 use App\Library\AssertionLibrary;
 
 /**
- * App\Model\Table\TeamsTable Test Case
+ * App\Model\Table\TeamResultsTable Test Case
  */
-class TeamsTableTest extends TestCase
+class TeamResultsTableTest extends TestCase
 {
     /**
      * Test subject
      *
-     * @var \App\Model\Table\TeamsTable
+     * @var \App\Model\Table\TeamResultsTable
      */
-    protected $Teams;
+    protected $TeamResults;
 
     /**
      * Fixtures
@@ -25,8 +25,8 @@ class TeamsTableTest extends TestCase
      * @var array<string>
      */
     protected $fixtures = [
+        'app.TeamResults',
         'app.Teams',
-        'app.Leagues',
     ];
 
     /**
@@ -37,8 +37,8 @@ class TeamsTableTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $config = $this->getTableLocator()->exists('Teams') ? [] : ['className' => TeamsTable::class];
-        $this->Teams = $this->getTableLocator()->get('Teams', $config);
+        $config = $this->getTableLocator()->exists('TeamResults') ? [] : ['className' => TeamResultsTable::class];
+        $this->TeamResults = $this->getTableLocator()->get('TeamResults', $config);
     }
 
     /**
@@ -48,7 +48,7 @@ class TeamsTableTest extends TestCase
      */
     protected function tearDown(): void
     {
-        unset($this->Teams);
+        unset($this->TeamResults);
 
         parent::tearDown();
     }
@@ -57,7 +57,7 @@ class TeamsTableTest extends TestCase
      * Test validationDefault method
      *
      * @return void
-     * @uses \App\Model\Table\TeamsTable::validationDefault()
+     * @uses \App\Model\Table\TeamResultsTable::validationDefault()
      */
     public function testValidationDefault(): void
     {
@@ -68,7 +68,7 @@ class TeamsTableTest extends TestCase
      * Test buildRules method
      *
      * @return void
-     * @uses \App\Model\Table\TeamsTable::buildRules()
+     * @uses \App\Model\Table\TeamResultsTable::buildRules()
      */
     public function testBuildRules(): void
     {
@@ -82,13 +82,13 @@ class TeamsTableTest extends TestCase
      */
     public function testFindActive(): void
     {
-        $query = $this->Teams->find()
+        $query = $this->TeamResults->find()
             ->find('active');
 
         $queryString = AssertionLibrary::getBindingQuery($query);
 
         $this->assertRegExpSql(
-            'Teams.is_deleted = 0',
+            'TeamResults.is_deleted = 0',
             $queryString,
             true,
         );
@@ -101,7 +101,7 @@ class TeamsTableTest extends TestCase
      */
     public function testFindById(): void
     {
-        $query = $this->Teams->find()
+        $query = $this->TeamResults->find()
             ->find('byId', [
                 'id' => 1,
             ]);
@@ -109,88 +109,67 @@ class TeamsTableTest extends TestCase
         $queryString = AssertionLibrary::getBindingQuery($query);
 
         $this->assertRegExpSql(
-            'Teams.id = 1',
+            'TeamResults.id = 1',
             $queryString,
             true,
         );
     }
 
     /**
-     * IDリスト指定カスタムファインダーテスト
+     * 試合日時指定カスタムファインダーテスト
      * 
      * @return void
      */
-    public function testFindByIdList(): void
+    public function testFindByMatchDate(): void
     {
-        $query = $this->Teams->find()
-            ->find('byIdList', [
-                'id_list' => [1,2],
+        $query = $this->TeamResults->find()
+            ->find('byMatchDate', [
+                'match_date' => '2023-02-14 20:07:23',
             ]);
 
         $queryString = AssertionLibrary::getBindingQuery($query);
 
         $this->assertTextContains(
-            'Teams.id IN (1,2)',
+            "TeamResults.match_date < '2023-02-14 20:07:23'",
             $queryString,
         );
     }
 
     /**
-     * チーム名指定カスタムファインダーテスト
+     * チーム結果ID指定カスタムファインダーテスト
      * 
      * @return void
      */
-    public function testFindByName(): void
+    public function testFindByTeamId(): void
     {
-        $query = $this->Teams->find()
-            ->find('byName', [
-                'name' => 'testName',
+        $query = $this->TeamResults->find()
+            ->find('byTeamId', [
+                'team_id' => 1,
             ]);
 
         $queryString = AssertionLibrary::getBindingQuery($query);
 
         $this->assertRegExpSql(
-            "Teams.name = 'testName'",
+            "TeamResults.team_id = 1",
             $queryString,
             true,
         );
     }
 
     /**
-     * リーグID指定カスタムファインダーテスト
-     * 
-     * @return void
-     */
-    public function testFindByCountryId(): void
-    {
-        $query = $this->Teams->find()
-            ->find('byLeagueId', [
-                'league_id' => 1,
-            ]);
-
-        $queryString = AssertionLibrary::getBindingQuery($query);
-
-        $this->assertRegExpSql(
-            "Teams.league_id = 1",
-            $queryString,
-            true,
-        );
-    }
-
-    /**
-     * Companiesのcontainテスト(#615)
+     * Teamsのcontainテスト(#615)
      *
      * @return void
      */
-    public function testFindContainCustomers(): void
+    public function testFindContainTeams(): void
     {
-        $query = $this->Teams->find()
-            ->find('containLeagues');
+        $query = $this->TeamResults->find()
+            ->find('containTeams');
 
         $queryString = AssertionLibrary::getBindingQuery($query);
 
         $this->assertTextContains(
-            'INNER JOIN leagues Leagues ON (Leagues.is_deleted = 0 AND Leagues.id = Teams.league_id)',
+            'INNER JOIN teams Teams ON (Teams.is_deleted = 0 AND Teams.id = TeamResults.team_id)',
             $queryString,
         );
     }

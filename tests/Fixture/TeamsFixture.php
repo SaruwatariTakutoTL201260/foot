@@ -45,6 +45,15 @@ class TeamsFixture extends TestFixture
                 'modified' => '2023-02-14 17:39:08',
                 'is_deleted' => 1,
             ],
+            [
+                'id' => 4,
+                'league_id' => 1,
+                'name' => 'Lorem ipsum dolor sit amet',
+                'emblem' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
+                'studium' => 'Lorem ipsum dolor sit amet',
+                'modified' => '2023-02-14 17:39:08',
+                'is_deleted' => 0,
+            ],
         ];
         parent::init();
     }

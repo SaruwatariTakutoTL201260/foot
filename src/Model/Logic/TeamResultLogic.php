@@ -8,18 +8,20 @@ use App\Model\Logic\AppLogic;
 use Cake\ORM\Query;
 use Cake\ORM\Table;
 
+use function PHPUnit\Framework\isTrue;
+
 /**
- *  チームLogic
+ *  チーム結果Logic
  * 
  * @package App\Model\Logic;
- * @property \Cake\ORM\Table $teams
+ * @property \Cake\ORM\Table $teamResults
  */
-class TeamLogic extends AppLogic
+class TeamResultLogic extends AppLogic
 {
     /**
-     * @var \Cake\ORM\Table チームテーブル
+     * @var \Cake\ORM\Table チーム結果テーブル
      */
-    protected Table $teams;
+    protected Table $teamResults;
 
     /**
      * コンストラクタ
@@ -29,11 +31,11 @@ class TeamLogic extends AppLogic
         parent::__construct();
 
         //Model設定
-        $this->teams = $this->getTableLocator()->get('Teams');
+        $this->teamResults = $this->getTableLocator()->get('TeamResults');
     }
 
     /**
-     * チーム一覧取得処理
+     * チーム結果一覧取得処理
      * 
      * @param array $condition 取得条件
      * @return array 処理結果配列
@@ -59,7 +61,33 @@ class TeamLogic extends AppLogic
     }
 
     /**
-     * チーム取得処理
+     * チーム結果一覧取得処理
+     * 
+     * @param array $condition 取得条件
+     * @return array 処理結果配列
+     */
+    public function fetchDataListEachTeams(array $condition=[]): array
+    {
+        $result = $this->fetchResultSetInterface(
+            $this->generateQuery($condition)
+        );
+
+        if (is_null($result)) {
+            //条件に合うデータがない場合
+            return [
+                'code' => HttpCodeConstant::NO_CONTENT,
+                'data' => [],
+            ];
+        }
+
+        return [
+            'code' => HttpCodeConstant::SUCCESS,
+            'data' => $result->toArray(),
+        ];
+    }
+
+    /**
+     * チーム結果取得処理
      * 
      * @param array $condition 取得条件
      * @return array 処理結果配列
@@ -102,9 +130,10 @@ class TeamLogic extends AppLogic
      */
     public function generateQuery($condition): Query
     {
-        $query = $this->teams->find()
+        $query = $this->teamResults->find()
             ->find('active')
-            ->find('containLeagues');
+            ->find('containTeams')
+            ->order(['match_date' => 'DESC']);
 
         return $this->generateCondition($query, $condition);
     }
@@ -120,30 +149,23 @@ class TeamLogic extends AppLogic
     {
         if (!empty($condition)) {
             if (isset($condition['id'])) {
-                //IDを指定
+                // IDを指定
                 $query = $query->find('byId', [
                     'id' => $condition['id'],
                 ]);
             }
 
-            if (isset($condition['id_list'])) {
-                //IDリストを指定
-                $query = $query->find('byIdList', [
-                    'id_list' => $condition['id_list'],
+            if (isset($condition['match_date'])) {
+                // 試合日時を指定
+                $query = $query->find('byMatchDate', [
+                    'match_date' => $condition['match_date'],
                 ]);
             }
 
-            if (isset($condition['league_id'])) {
-                //リーグIDを指定
-                $query = $query->find('byLeagueId', [
-                    'league_id' => $condition['league_id']
-                ]);
-            }
-
-            if (isset($condition['name'])) {
-                //チーム名を指定
-                $query = $query->find('byName', [
-                    'name' => $condition['name']
+            if (isset($condition['team_id'])) {
+                // チームIDを指定
+                $query = $query->find('byTeamId', [
+                    'team_id' => $condition['team_id']
                 ]);
             }
         }
