@@ -9,17 +9,17 @@ use Cake\ORM\Query;
 use Cake\ORM\Table;
 
 /**
- *  チーム結果Logic
+ *  選手登録Logic
  * 
  * @package App\Model\Logic;
- * @property \Cake\ORM\Table $teamResults
+ * @property \Cake\ORM\Table $players
  */
-class TeamResultLogic extends AppLogic
+class PlayerLogic extends AppLogic
 {
     /**
-     * @var \Cake\ORM\Table チーム結果テーブル
+     * @var \Cake\ORM\Table 選手登録テーブル
      */
-    protected Table $teamResults;
+    protected Table $players;
 
     /**
      * コンストラクタ
@@ -29,11 +29,11 @@ class TeamResultLogic extends AppLogic
         parent::__construct();
 
         //Model設定
-        $this->teamResults = $this->getTableLocator()->get('TeamResults');
+        $this->players = $this->getTableLocator()->get('Players');
     }
 
     /**
-     * チーム結果一覧取得処理
+     * 選手登録一覧取得処理
      * 
      * @param array $condition 取得条件
      * @return array 処理結果配列
@@ -45,7 +45,7 @@ class TeamResultLogic extends AppLogic
         );
 
         if (is_null($result)) {
-            //条件に合うデータがない場合
+            //　条件に合うデータがない場合
             return [
                 'code' => HttpCodeConstant::NO_CONTENT,
                 'data' => [],
@@ -59,7 +59,7 @@ class TeamResultLogic extends AppLogic
     }
 
     /**
-     * チーム結果取得処理
+     * 選手登録取得処理
      * 
      * @param array $condition 取得条件
      * @return array 処理結果配列
@@ -102,10 +102,9 @@ class TeamResultLogic extends AppLogic
      */
     public function generateQuery($condition): Query
     {
-        $query = $this->teamResults->find()
+        $query = $this->players->find()
             ->find('active')
-            ->find('containTeams')
-            ->order(['match_date' => 'DESC']);
+            ->find('containTeams');
 
         return $this->generateCondition($query, $condition);
     }
@@ -127,10 +126,17 @@ class TeamResultLogic extends AppLogic
                 ]);
             }
 
-            if (isset($condition['match_date'])) {
-                // 試合日時を指定
-                $query = $query->find('byMatchDate', [
-                    'match_date' => $condition['match_date'],
+            if (isset($condition['position_status'])) {
+                // ポジションステータスを指定
+                $query = $query->find('byPositionStatus', [
+                    'position_status' => $condition['position_status'],
+                ]);
+            }
+
+            if (isset($condition['name'])) {
+                // 選手名を指定
+                $query = $query->find('byName', [
+                    'name' => $condition['name'],
                 ]);
             }
 

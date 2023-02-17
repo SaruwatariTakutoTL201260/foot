@@ -218,7 +218,7 @@ class CountryLogicTest extends TestCase
      */
     public function testUpdateServerError(): void
     {
-        $result = $this->logic->update(['id' => 1], ['name' => '']);
+        $result = $this->logic->update(['id' => 1], ['name' => str_repeat('a', 256)]);
 
         $this->assertIsArray($result);
         $this->assertEquals('500', $result['code']);
@@ -247,7 +247,7 @@ class CountryLogicTest extends TestCase
     public function testInsertServerError(): void
     {
         $result = $this->logic->insert([
-            'name' => '',
+            'name' => str_repeat('a', 256),
         ]);
         
         $this->assertIsArray($result);

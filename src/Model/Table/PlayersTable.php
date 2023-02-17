@@ -10,29 +10,28 @@ use Cake\Validation\Validator;
 use Cake\Database\Expression\QueryExpression;
 use App\Constant\CodeConstant;
 
-
 /**
- * TeamResults Model
+ * Players Model
  *
  * @property \App\Model\Table\TeamsTable&\Cake\ORM\Association\BelongsTo $Teams
  *
- * @method \App\Model\Entity\TeamResult newEmptyEntity()
- * @method \App\Model\Entity\TeamResult newEntity(array $data, array $options = [])
- * @method \App\Model\Entity\TeamResult[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\TeamResult get($primaryKey, $options = [])
- * @method \App\Model\Entity\TeamResult findOrCreate($search, ?callable $callback = null, $options = [])
- * @method \App\Model\Entity\TeamResult patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \App\Model\Entity\TeamResult[] patchEntities(iterable $entities, array $data, array $options = [])
- * @method \App\Model\Entity\TeamResult|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\TeamResult saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\TeamResult[]|\Cake\Datasource\ResultSetInterface|false saveMany(iterable $entities, $options = [])
- * @method \App\Model\Entity\TeamResult[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, $options = [])
- * @method \App\Model\Entity\TeamResult[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
- * @method \App\Model\Entity\TeamResult[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
+ * @method \App\Model\Entity\Player newEmptyEntity()
+ * @method \App\Model\Entity\Player newEntity(array $data, array $options = [])
+ * @method \App\Model\Entity\Player[] newEntities(array $data, array $options = [])
+ * @method \App\Model\Entity\Player get($primaryKey, $options = [])
+ * @method \App\Model\Entity\Player findOrCreate($search, ?callable $callback = null, $options = [])
+ * @method \App\Model\Entity\Player patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method \App\Model\Entity\Player[] patchEntities(iterable $entities, array $data, array $options = [])
+ * @method \App\Model\Entity\Player|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\Player saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\Player[]|\Cake\Datasource\ResultSetInterface|false saveMany(iterable $entities, $options = [])
+ * @method \App\Model\Entity\Player[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, $options = [])
+ * @method \App\Model\Entity\Player[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
+ * @method \App\Model\Entity\Player[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
  *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
-class TeamResultsTable extends Table
+class PlayersTable extends Table
 {
     /**
      * Initialize method
@@ -44,8 +43,8 @@ class TeamResultsTable extends Table
     {
         parent::initialize($config);
 
-        $this->setTable('team_results');
-        $this->setDisplayField('id');
+        $this->setTable('players');
+        $this->setDisplayField('name');
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
@@ -68,39 +67,31 @@ class TeamResultsTable extends Table
             ->notEmptyString('team_id');
 
         $validator
-            ->dateTime('match_date')
-            ->allowEmptyDateTime('match_date');
+            ->scalar('name')
+            ->maxLength('name', 255)
+            ->notEmptyString('name');
 
         $validator
-            ->notEmptyString('mache_number');
+            ->scalar('english_name')
+            ->maxLength('english_name', 255)
+            ->allowEmptyString('english_name');
 
         $validator
-            ->notEmptyString('rank');
+            ->notEmptyString('age');
 
         $validator
-            ->notEmptyString('won');
+            ->allowEmptyString('number');
 
         $validator
-            ->notEmptyString('lose');
-
-        $validator
-            ->notEmptyString('tied');
-
-        $validator
-            ->notEmptyString('score');
-
-        $validator
-            ->notEmptyString('lost_point');
-
-        $validator
-            ->notEmptyString('winning_points');
-
-        $validator
-            ->notEmptyString('goals_score');
+            ->scalar('remark')
+            ->allowEmptyString('remark');
 
         $validator
             ->boolean('is_deleted')
             ->notEmptyString('is_deleted');
+
+        $validator
+            ->notEmptyString('position_status');
 
         return $validator;
     }
@@ -119,8 +110,8 @@ class TeamResultsTable extends Table
         return $rules;
     }
 
-    /**
-     * ID指定チーム結果カスタムファインダー
+        /**
+     * ID指定選手登録カスタムファインダー
      * 
      * @param \Cake\ORM\Query $query ベースクエリ
      * @param array $options パラメータ
@@ -129,12 +120,12 @@ class TeamResultsTable extends Table
     public function findById(Query $query, array $options=[]): Query
     {
         return $query->where(function (QueryExpression $exp) use ($options) {
-            return $exp->eq('TeamResults.id', $options['id']);
+            return $exp->eq('Players.id', $options['id']);
         });
     }
 
     /**
-     * 有効データ指定チーム結果カスタムファインダー
+     * 有効データ指定選手登録カスタムファインダー
      * 
      * @param \Cake\ORM\Query $query ベースクエリ
      * @param array $options パラメータ
@@ -143,26 +134,40 @@ class TeamResultsTable extends Table
     public function findActive(Query $query, array $options=[]): Query
     {
         return $query->where(function (QueryExpression $exp) use ($options) {
-            return $exp->eq('TeamResults.is_deleted', CodeConstant::NOT_DELETED);
+            return $exp->eq('Players.is_deleted', CodeConstant::NOT_DELETED);
         });
     }
 
     /**
-     * 試合日時指定チーム結果カスタムファインダー
+     * ポジション指定選手登録カスタムファインダー
      * 
      * @param \Cake\ORM\Query $query ベースクエリ
      * @param array $options パラメータ
      * @return \Cake\ORM\Query 生成したクエリ
      */
-    public function findByMatchDate(Query $query, array $options=[]): Query
+    public function findByPositionStatus(Query $query, array $options=[]): Query
     {
         return $query->where(function (QueryExpression $exp) use ($options) {
-            return $exp->lt('TeamResults.match_date', $options['match_date']);
+            return $exp->eq('Players.position_status', $options['position_status']);
         });
     }
 
     /**
-     * チームID指定カスタムファインダー
+     * 選手名指定選手登録カスタムファインダー
+     * 
+     * @param \Cake\ORM\Query $query ベースクエリ
+     * @param array $options パラメータ
+     * @return \Cake\ORM\Query 生成したクエリ
+     */
+    public function findByName(Query $query, array $options=[]): Query
+    {
+        return $query->where(function (QueryExpression $exp) use ($options) {
+            return $exp->eq('Players.name', $options['name']);
+        });
+    }
+
+    /**
+     * チームID指定選手登録カスタムファインダー
      * 
      * @param \Cake\ORM\Query $query ベースクエリ
      * @param array $options パラメータ
@@ -171,7 +176,7 @@ class TeamResultsTable extends Table
     public function findByTeamId(Query $query, array $options=[]): Query
     {
         return $query->where(function (QueryExpression $exp) use ($options) {
-            return $exp->eq('TeamResults.team_id', $options['team_id']);
+            return $exp->eq('Players.team_id', $options['team_id']);
         });
     }
 

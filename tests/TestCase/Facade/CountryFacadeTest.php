@@ -147,7 +147,7 @@ class CountryFacadeTest extends TestCase
      */
     public function testExecuteAddServerError(): void
     {
-        $result = $this->facade->executeAdd([]);
+        $result = $this->facade->executeAdd(['name' => str_repeat('a', 256)]);
 
         $this->assertIsArray($result);
         $this->assertEquals('500', $result['response']['code']);
@@ -200,7 +200,7 @@ class CountryFacadeTest extends TestCase
      */
     public function testExecuteEditServerError(): void
     {
-        $result = $this->facade->executeEdit(['id' => 1],['name' => '']);
+        $result = $this->facade->executeEdit(['id' => 1],['name' => str_repeat('a', 256)]);
 
         $this->assertIsArray($result);
         $this->assertEquals('500', $result['response']['code']);

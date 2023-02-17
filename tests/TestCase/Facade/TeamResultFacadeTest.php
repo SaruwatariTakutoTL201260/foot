@@ -133,4 +133,20 @@ class TeamResultFacadeTest extends TestCase
 
         assertIsArray($result);
     }
+
+    /**
+     * リーグ順位取得Facade
+     * 
+     * @return void
+     */
+    public function testExecuteScoreError(): void
+    {
+        $result = $this->facade->executeScore([
+            'league_id' => 2,
+            'match_date' => '2023-02-12 20:07:23',
+        ]);
+
+        $this->assertIsArray($result);
+        $this->assertEquals('204', $result['response']['code']);
+    }
 }

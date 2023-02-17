@@ -52,7 +52,7 @@ class TeamResultsFixture extends TestFixture
             ],
             [
                 'id' => 3,
-                'team_id' => 2,
+                'team_id' => 3,
                 'match_date' => '2023-02-10 20:07:23',
                 'mache_number' => 0,
                 'rank' => 2,
@@ -109,7 +109,7 @@ class TeamResultsFixture extends TestFixture
                 'tied' => 0,
                 'score' => 0,
                 'lost_point' => 0,
-                'winning_points' => 0,
+                'winning_points' => 5,
                 'goals_score' => 0,
                 'modified' => '2023-02-14 20:07:23',
                 'is_deleted' => 0,
