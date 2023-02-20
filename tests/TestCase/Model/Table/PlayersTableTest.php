@@ -136,7 +136,7 @@ class PlayersTableTest extends TestCase
     }
 
     /**
-     * チーム結果ID指定カスタムファインダーテスト
+     * 選手登録名ID指定カスタムファインダーテスト
      * 
      * @return void
      */
@@ -157,7 +157,7 @@ class PlayersTableTest extends TestCase
     }
 
     /**
-     * チーム結果ID指定カスタムファインダーテスト
+     * チームID指定カスタムファインダーテスト
      * 
      * @return void
      */

@@ -166,7 +166,35 @@ class PlayerRecordsTable extends Table
     }
 
     /**
-     * 試合日時指定チーム結果カスタムファインダー
+     * ゴール数指定選手成績カスタムファインダー
+     * 
+     * @param \Cake\ORM\Query $query ベースクエリ
+     * @param array $options パラメータ
+     * @return \Cake\ORM\Query 生成したクエリ
+     */
+    public function findByGoal(Query $query, array $options=[]): Query
+    {
+        return $query->where(function (QueryExpression $exp) use ($options) {
+            return $exp->eq('PlayerRecords.goal', $options['goal']);
+        });
+    }
+
+    /**
+     * アシスト数指定選手成績カスタムファインダー
+     * 
+     * @param \Cake\ORM\Query $query ベースクエリ
+     * @param array $options パラメータ
+     * @return \Cake\ORM\Query 生成したクエリ
+     */
+    public function findByAssist(Query $query, array $options=[]): Query
+    {
+        return $query->where(function (QueryExpression $exp) use ($options) {
+            return $exp->eq('PlayerRecords.assist', $options['assist']);
+        });
+    }
+
+    /**
+     * 試合日時指定選手成績カスタムファインダー
      * 
      * @param \Cake\ORM\Query $query ベースクエリ
      * @param array $options パラメータ
@@ -240,7 +268,7 @@ class PlayerRecordsTable extends Table
     /**
      * LeaguesとのContain
      *
-     * 条件：Teamsテーブルのis_deletedがtrue(削除フラグが有効)の場合
+     * 条件：Leaguesテーブルのis_deletedがtrue(削除フラグが有効)の場合
      * generateQueryのベースクエリに上記をデフォルトで追加
      *
      * @param \Cake\ORM\Query $query ベースクエリ
