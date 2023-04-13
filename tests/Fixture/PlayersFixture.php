@@ -66,6 +66,18 @@ class PlayersFixture extends TestFixture
                 'is_deleted' => 1,
                 'position_status' => 1,
             ],
+            [
+                'id' => 5,
+                'team_id' => 1,
+                'name' => 'testName',
+                'english_name' => 'Lorem ipsum dolor sit amet',
+                'age' => 1,
+                'number' => 1,
+                'remark' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
+                'modified' => '2023-02-16 16:32:51',
+                'is_deleted' => 0,
+                'position_status' => 1,
+            ],
         ];
         parent::init();
     }

@@ -1,15 +1,16 @@
 <?php
 declare(strict_types=1);
 
+use App\Constant\CountryConstant;
 use Migrations\AbstractSeed;
 use Cake\ORM\TableRegistry;
 
 /**
- * Leagues seed.
+ * Countries seed.
  */
 use App\Constant\LeagueConstant;
 
-class LeaguesSeed extends AbstractSeed
+class CountriesSeed extends AbstractSeed
 {
     /**
      * Run Method.
@@ -27,26 +28,23 @@ class LeaguesSeed extends AbstractSeed
         ];
 
         // テーブル設定
-        $table = $this->table('leagues');
+        $table = $this->table('countries');
 
         // モデル定義
-        $model = TableRegistry::getTableLocator()->get('leagues');
+        $model = TableRegistry::getTableLocator()->get('countries');
 
         if ($model->find()->count() === 0) {
             // データが0件の場合に処理続行
             $data = [];
 
-            foreach (LeagueConstant::LEAGUE_LIST as $key => $value) {
-                $country_id = LeagueConstant::COUNTRY_ID_LIST[$key];
-
+            foreach (CountryConstant::COUNTRY_ENGLISH_LIST as $value) {
                 $data[] = [
-                    'country_id' => $country_id,
                     'name' => $value,
                     'is_deleted' => 0,
                 ];
-            }
-
-            $table->insert($data)->save();
+            }            
         }
+
+        $table->insert($data)->save();
     }
 }

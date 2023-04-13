@@ -4,23 +4,23 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Controller\AppController;
-use App\Facade\CountryFacade;
+use App\Facade\LeagueFacade;
 use Cake\Event\EventInterface;
 
 /**
- * 国Controller
+ * リーグController
  * 
  * @package App\Controller
- * @property \App\Facade\CountryFacade $facade
+ * @property \App\Facade\LeagueFacade $facade
  */
-class CountriesController extends AppController
+class LeaguesController extends AppController
 {
     /**
-     * 国Facade
+     * リーグFacade
      * 
-     * @var \App\Facade\CountryFacade
+     * @var \App\Facade\LeagueFacade
      */
-    protected CountryFacade $facade;
+    protected LeagueFacade $facade;
 
     /**
      * 初期化
@@ -33,7 +33,7 @@ class CountriesController extends AppController
         parent::initialize();
 
         // Facade設定
-        $this->facade = new CountryFacade();
+        $this->facade = new LeagueFacade();
     }
 
     /**

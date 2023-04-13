@@ -139,6 +139,25 @@ class PlayerRecordsTableTest extends TestCase
     }
 
     /**
+     * ゴールランキングカスタムファインダーテスト
+     * 
+     * @return void
+     */
+    public function testFindOrderByGoal(): void
+    {
+        $query = $this->PlayerRecords->find()
+            ->find('orderByGoal');
+
+        $queryString = AssertionLibrary::getBindingQuery($query);
+
+        $this->assertRegExpSql(
+            'ORDER BY goal DESC',
+            $queryString,
+            true,
+        );
+    }
+
+    /**
      * アシスト数指定カスタムファインダーテスト
      * 
      * @return void

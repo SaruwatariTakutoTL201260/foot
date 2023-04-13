@@ -180,6 +180,17 @@ class PlayerRecordsTable extends Table
     }
 
     /**
+     * ゴールランキングカスタムファインダー
+     * 
+     * @param \Cake\ORM\Query $query ベースクエリ
+     * @return \Cake\ORM\Query 生成したクエリ
+     */
+    public function findOrderByGoal(Query $query): Query
+    {
+        return $query->order(['goal' => 'DESC']);
+    }
+
+    /**
      * アシスト数指定選手成績カスタムファインダー
      * 
      * @param \Cake\ORM\Query $query ベースクエリ

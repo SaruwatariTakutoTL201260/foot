@@ -92,4 +92,21 @@ class LeagueConstant
         self::UCL => 'UCL',
         self::UEL => 'UEL',
     ];
+
+    /**
+     * リーグ名リスト
+     * 
+     * @var string[]
+     */
+    public const COUNTRY_ID_LIST = [
+        self::JAPAN_1 => '86',
+        self::JAPAN_2 => '86',
+        self::PREMIER => '180',
+        self::LA_LIGA => '164',
+        self::BUNDESLIGA => '66',
+        self::LEAGUE_1 => '62',
+        self::SERIE_A => '84',
+        self::UCL => '195',
+        self::UEL => '195',
+    ];
 }
