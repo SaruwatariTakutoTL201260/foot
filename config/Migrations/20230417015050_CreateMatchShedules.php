@@ -16,7 +16,6 @@ class CreateMatchShedules extends AbstractMigration
     {
         $table = $this->table('match_shedules');
 
-        
         $table->create();
     }
 }

@@ -5,10 +5,7 @@ namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Table\ManagersTable;
 use Cake\TestSuite\TestCase;
-<<<<<<< HEAD
-=======
 use App\Library\AssertionLibrary;
->>>>>>> 3c2aab6 (確認)
 
 /**
  * App\Model\Table\ManagersTable Test Case
@@ -78,8 +75,6 @@ class ManagersTableTest extends TestCase
     {
         $this->markTestIncomplete('Not implemented yet.');
     }
-<<<<<<< HEAD
-=======
 
     /**
      * ID指定カスタムファインダーテスト
@@ -273,5 +268,4 @@ class ManagersTableTest extends TestCase
         );
 
     }
->>>>>>> 3c2aab6 (確認)
 }

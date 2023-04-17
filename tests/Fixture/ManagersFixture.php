@@ -29,8 +29,6 @@ class ManagersFixture extends TestFixture
                 'modified' => '2023-04-13 22:37:44',
                 'is_deleted' => 0,
             ],
-<<<<<<< HEAD
-=======
             [
                 'id' => 2,
                 'team_id' => 4,
@@ -75,7 +73,6 @@ class ManagersFixture extends TestFixture
                 'modified' => '2023-04-13 22:37:44',
                 'is_deleted' => 0,
             ],
->>>>>>> 3c2aab6 (確認)
         ];
         parent::init();
     }
