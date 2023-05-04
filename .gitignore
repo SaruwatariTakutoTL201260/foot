@@ -53,4 +53,4 @@ yarn-debug.log
 yarn-error.log
 
 # OpenApiConstant(apiKeyを含むため)
-/src/Constant/OpenApiConstant
+/src/Constant/OpenApiConstant.php
