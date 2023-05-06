@@ -15,6 +15,7 @@ use Cake\ORM\Entity;
  * @property string|null $studium
  * @property \Cake\I18n\FrozenTime|null $modified
  * @property bool $is_deleted
+ * @property int $get_team_id
  *
  * @property \App\Model\Entity\League $league
  */

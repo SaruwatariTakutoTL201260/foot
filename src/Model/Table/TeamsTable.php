@@ -67,6 +67,9 @@ class TeamsTable extends Table
             ->notEmptyString('league_id');
 
         $validator
+            ->notEmptyString('get_team_id');
+
+        $validator
             ->scalar('name')
             ->maxLength('name', 255)
             ->allowEmptyString('name');
@@ -168,6 +171,20 @@ class TeamsTable extends Table
     {
         return $query->where(function (QueryExpression $exp) use ($options) {
             return $exp->eq('Teams.league_id', $options['league_id']);
+        });
+    }
+
+    /**
+     * 取得ID指定カスタムファインダー
+     * 
+     * @param \Cake\ORM\Query $query ベースクエリ
+     * @param array $options パラメータ
+     * @return \Cake\ORM\Query 生成したクエリ
+     */
+    public function findByGetTeamId(Query $query, array $options=[]): Query
+    {
+        return $query->where(function (QueryExpression $exp) use ($options) {
+            return $exp->eq('Teams.get_team_id', $options['get_team_id']);
         });
     }
 

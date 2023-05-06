@@ -104,6 +104,15 @@ class MatchShedulesTable extends Table
             ->boolean('is_deleted')
             ->notEmptyString('is_deleted');
 
+        $validator
+            ->allowEmptyString('referee_id');
+
+        $validator
+            ->allowEmptyString('studium_id');
+            
+        $validator
+            ->notEmptyString('get_id');
+
         return $validator;
     }
 

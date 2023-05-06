@@ -18,6 +18,9 @@ use Cake\ORM\Entity;
  * @property int $match_status
  * @property \Cake\I18n\FrozenTime|null $modified
  * @property bool $is_deleted
+ * @property int $get_id
+ * @property int|null $referee_id
+ *  @property int|null $studium_id
  *
  * @property \App\Model\Entity\League $league
  */

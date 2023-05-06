@@ -109,4 +109,21 @@ class LeagueConstant
         self::UCL => '195',
         self::UEL => '195',
     ];
+
+    /**
+     * リーグ取得idリスト
+     * 
+     * @var int[]
+     */
+    public const LEAGUE_GET_ID_LIST = [
+        self::JAPAN_1 => 98,
+        self::JAPAN_2 => 99,
+        self::PREMIER => 39,
+        self::LA_LIGA => 140,
+        self::BUNDESLIGA => 78,
+        self::LEAGUE_1 => 61,
+        self::SERIE_A => 135,
+        self::UCL => 2,
+        self::UEL => 3,
+    ];
 }

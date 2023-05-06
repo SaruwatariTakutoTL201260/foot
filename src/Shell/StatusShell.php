@@ -6,14 +6,14 @@ use Cake\Console\Shell;
 use Cake\Http\Client;
 use App\Constant\OpenApiConstant;
 
-class HelloShell extends Shell
+class StatusShell extends Shell
 {
     public function main()
     {
         $http = new Client();
 
         // APIsportsのステータスエンドポイントにGETリクエストを送信
-        $response = $http->get('https://v3.football.api-sports.io/status', [], [
+        $response = $http->get(OpenApiConstant::STATUS_ENDPOINT, [], [
             'headers' => [
                 'x-apisports-key' => OpenApiConstant::OPEN_API_KEY, // APIsportsの認証キーをヘッダーに追加
             ]

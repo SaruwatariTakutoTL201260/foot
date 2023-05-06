@@ -219,5 +219,56 @@ class TeamLogicTest extends TestCase
         $this->assertIsArray($result);
         $this->assertEquals('204', $result['code']);
     }
+
+    /**
+     * チーム一括登録処理-success
+     * 
+     * @return void
+     */
+    public function testInsertAllSuccess(): void
+    {
+        $result = $this->logic->insertAll([
+            [
+                'league_id' => 2,
+                'name' => 'testInertName',
+                'emblem' => 'testEmblem',
+                'studium' => 'testStudium',
+            ],
+            [
+                'league_id' => 3,
+                'name' => 'testInertName02',
+                'emblem' => 'testEmblem02',
+                'studium' => 'testStudium02',
+            ]
+        ]);
+
+        $this->assertIsArray($result);
+        $this->assertEquals('200', $result['code']);
+    }
+
+    /**
+     * チーム一括登録処理-validationError
+     * 
+     * @return void
+     */
+    public function testInsertAllValidationError(): void
+    {
+        $result = $this->logic->insertAll([
+            [
+                'league_id' => 5,
+                'name' => 'testInertName',
+                'emblem' => 'testEmblem',
+                'studium' => 'testStudium',
+            ],
+            [
+                'league_id' => 4,
+                'name' => str_repeat('a', 256),
+                'emblem' => 'testEmblem02',
+                'studium' => str_repeat('a', 256),
+            ]
+        ]);
+        $this->assertIsArray($result);
+        $this->assertEquals('500', $result['code']);
+    }
 } 
 

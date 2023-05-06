@@ -92,6 +92,33 @@ class AppLogic
     }
 
     /**
+     * バリデーションエラーメッセージ生成処理
+     *
+     * バリデーション時のエラーメッセージを配列形式に再生成して返す
+     * getError()のパラメータには対象フィールドがセットされる
+     * メッセージの末尾に改行コードをつける
+     *
+     * 添字部分のマジックナンバーは実際にはエラー概要がセットされる(_requiredなど)
+     * エラー概要配下に関しては本来はループを実施する必要があるが、エラー概要をKeyとして
+     * メッセージ部分をValueとして取得するだけのためマジックナンバーを使用している
+     *
+     * @param array $entities エラー発生対象EntityInterface
+     * @return array 生成したバリデーションエラーメッセージ配列
+     */
+    public function generateMaltipleValidationErrorMessage(array $entities): array
+    {
+        $errorMessageList = [];
+
+        foreach ($entities as $entity) {
+            foreach ($entity->getErrors() as $key => $value) {
+                $errorMessageList[] = array_values($entity->getError($key))[0] . "\n";
+            }
+        }
+
+        return $errorMessageList;
+    }
+
+    /**
      * 更新EntityInterface生成処理
      *
      * @param \Cake\ORM\Table $targetTable 対象テーブル
@@ -131,5 +158,32 @@ class AppLogic
         }
 
         return $entityInterface;
+    }
+
+    /**
+     * データ一括登録処理
+     *
+     * INSERT / UPDATE両方対応<br>
+     * 対象データを複数件INSERT / UPDATE実行<br>
+     * エラー時はfalseを返すため、必要あれば呼び元でエラーメッセージを取得すること<br>
+     * 例：$entityInterface->getErrors(); // エラーメッセージが配列で格納される
+     *
+     * @param \Cake\ORM\Table $targetTable 対象テーブル
+     * @param array $entityInterface 対象EntityInterface
+     * @return array|false 登録後EntityInterface
+     */
+    public function storeEntities(Table $targetTable, array $entityInterfaces): bool | array
+    {
+        // データ登録処理実行
+        $targetTable->saveMany($entityInterfaces);
+
+        foreach($entityInterfaces as $entityInterface) {
+            if ($entityInterface->hasErrors()) {
+                // バリデーションエラー時は処理中断
+                return false;
+            }
+        }
+
+        return $entityInterfaces;
     }
 }

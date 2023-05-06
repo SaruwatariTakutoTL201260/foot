@@ -21,6 +21,7 @@ class TeamsFixture extends TestFixture
             [
                 'id' => 1,
                 'league_id' => 1,
+                'get_team_id' => 1,
                 'name' => 'Lorem ipsum dolor sit amet',
                 'emblem' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
                 'studium' => 'Lorem ipsum dolor sit amet',
@@ -30,6 +31,7 @@ class TeamsFixture extends TestFixture
             [
                 'id' => 2,
                 'league_id' => 2,
+                'get_team_id' => 1,
                 'name' => 'testName',
                 'emblem' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
                 'studium' => 'Lorem ipsum dolor sit amet',
@@ -39,6 +41,7 @@ class TeamsFixture extends TestFixture
             [
                 'id' => 3,
                 'league_id' => 1,
+                'get_team_id' => 1,
                 'name' => 'testName',
                 'emblem' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
                 'studium' => 'Lorem ipsum dolor sit amet',
@@ -48,6 +51,7 @@ class TeamsFixture extends TestFixture
             [
                 'id' => 4,
                 'league_id' => 1,
+                'get_team_id' => 1,
                 'name' => 'Lorem ipsum dolor sit amet',
                 'emblem' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
                 'studium' => 'Lorem ipsum dolor sit amet',

@@ -3,8 +3,11 @@ declare(strict_types=1);
 
 namespace App\Model\Logic;
 
+use App\Constant\CodeConstant;
 use App\Constant\HttpCodeConstant;
 use App\Model\Logic\AppLogic;
+use App\Library\ConvertLibrary;
+
 use Cake\ORM\Query;
 use Cake\ORM\Table;
 
@@ -93,6 +96,53 @@ class TeamLogic extends AppLogic
         ];
     }
 
+    /**
+     * チーム一括登録処理
+     * 
+     * @param array $params 登録データ配列
+     * @return array 処理結果配列
+     */
+    public function insertAll(array $params): array
+    {
+        // 新規登録Entitiesを生成
+        $entities = $this->teams->newEntities($params);
+
+        // データ登録実行
+        $result = $this->storeEntities($this->teams, $entities);
+
+        // データ登録時エラーの場合
+        if (!$result) {
+            return [
+                'code' => HttpCodeConstant::SERVER_ERROR,
+                'data' => $this->generateMaltipleValidationErrorMessage($entities),
+            ];
+        }
+
+        // 正常終了として処理結果を返す
+        return [
+            'code' => HttpCodeConstant::SUCCESS,
+            'data' => '登録が完了しました',
+        ];
+    }
+
+    /**
+     * 登録パラメータ整形処理
+     * 
+     * @param array $params 登録情報配列
+     * @param int $leagueId
+     * @return array
+     */
+    public function mappingParams(array $params, int $leagueId): array
+    {
+        return [
+            'get_team_id' => $params['team']['id'],
+            'league_id' => $leagueId,
+            'name' => $params['team']['name'],
+            'studium' => $params['venue']['name'],
+            'is_deleted' => CodeConstant::NOT_DELETED,
+        ];
+    }
+
     
     /**
      * 検索クエリ生成処理
@@ -137,6 +187,13 @@ class TeamLogic extends AppLogic
                 //リーグIDを指定
                 $query = $query->find('byLeagueId', [
                     'league_id' => $condition['league_id']
+                ]);
+            }
+
+            if (isset($condition['get_team_id'])) {
+                // 取得チームIDを指定
+                $query = $query->find('byGetTeamId', [
+                    'get_team_id' => $condition['get_team_id']
                 ]);
             }
 

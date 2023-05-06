@@ -29,6 +29,9 @@ class MatchShedulesFixture extends TestFixture
                 'match_status' => 1,
                 'modified' => '2023-04-18 16:50:50',
                 'is_deleted' => 0,
+                'get_id' => 1,
+                'referee_id' => 1,
+                'studium_id' => 1,
             ],
             [
                 'id' => 2,
@@ -41,6 +44,9 @@ class MatchShedulesFixture extends TestFixture
                 'match_status' => 2,
                 'modified' => '2033-04-18 16:50:50',
                 'is_deleted' => 0,
+                'get_id' => 1,
+                'referee_id' => 1,
+                'studium_id' => 1,
             ],
             [
                 'id' => 3,
@@ -53,6 +59,9 @@ class MatchShedulesFixture extends TestFixture
                 'match_status' => 2,
                 'modified' => '2033-04-18 16:50:50',
                 'is_deleted' => 0,
+                'get_id' => 1,
+                'referee_id' => 1,
+                'studium_id' => 1,
             ],
         ];
         parent::init();

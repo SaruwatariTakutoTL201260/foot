@@ -178,6 +178,27 @@ class TeamsTableTest extends TestCase
     }
 
     /**
+     * 取得ID指定カスタムファインダーテスト
+     * 
+     * @return void
+     */
+    public function testFindByGetTeamId(): void
+    {
+        $query = $this->Teams->find()
+            ->find('byGetTeamId', [
+                'get_team_id' => 1,
+            ]);
+
+        $queryString = AssertionLibrary::getBindingQuery($query);
+
+        $this->assertRegExpSql(
+            "Teams.get_team_id = 1",
+            $queryString,
+            true,
+        );
+    }
+
+    /**
      * Companiesのcontainテスト(#615)
      *
      * @return void
