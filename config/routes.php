@@ -88,4 +88,17 @@ return static function (RouteBuilder $routes) {
      * });
      * ```
      */
+
+    $routes->scope('/', function (RouteBuilder $builder) {
+        // TeamsControllerのルーティング設定
+        $builder->connect('football/teams/{action}/*', ['controller' => 'Teams']);
+    
+        // LeaguesControllerのルーティング設定
+        $builder->connect('football/leagues/{action}/*', ['controller' => 'Leagues']);
+
+        // MatchSchedulesControllerのルーティング設定
+        $builder->connect('football/match-schedules/{action}/*', ['controller' => 'MatchSchedules']);
+
+    });
+    
 };

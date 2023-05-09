@@ -36,21 +36,17 @@ class TeamFacade extends \App\Facade\AppFacade
      */
     public function executeAdd(array $params, $leagueId): array
     {
-        // 条件に合うデータを取得
-        $fetchResult = $this->teamlogic->fetchDataList([
-            'league_id' => (int)$leagueId
-        ]);
+        // 整形
+        $params = Hash::map($params, "{n}", function ($item) use ($leagueId) {
 
-        // 存在するチーム名を配列にまとめる
-        $existGetIdList = Hash::extract($fetchResult["data"], "{n}.get_team_id");
+            $teamResult = $this->teamlogic->fetchData([
+                // 対象のチームデータを取得
+                'get_team_id' => $item['team']['id'],
+            ]);
 
-        $params = Hash::map($params, "{n}", function ($item) use ($leagueId, $existGetIdList) {
-            if (!empty($existGetIdList)) {
-                // 対象リーグのデータがある場合に処理
-                if (in_array((string)$item['team']['id'], $existGetIdList)) {
-                    // すでにテーブルが存在する場合は登録しない
-                    return null;
-                }
+            if ($teamResult['code'] === 200) {
+                // すでにチームが存在するならnullを返す
+                return null;
             }
 
             // db設計に合うように整形

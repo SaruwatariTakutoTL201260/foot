@@ -233,12 +233,14 @@ class TeamLogicTest extends TestCase
                 'name' => 'testInertName',
                 'emblem' => 'testEmblem',
                 'studium' => 'testStudium',
+                'get_team_id' => 2,
             ],
             [
                 'league_id' => 3,
                 'name' => 'testInertName02',
                 'emblem' => 'testEmblem02',
                 'studium' => 'testStudium02',
+                'get_team_id' => 2,
             ]
         ]);
 

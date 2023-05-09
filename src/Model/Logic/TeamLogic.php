@@ -129,7 +129,7 @@ class TeamLogic extends AppLogic
      * 登録パラメータ整形処理
      * 
      * @param array $params 登録情報配列
-     * @param int $leagueId
+     * @param int $leagueId リーグID
      * @return array
      */
     public function mappingParams(array $params, int $leagueId): array
@@ -142,7 +142,6 @@ class TeamLogic extends AppLogic
             'is_deleted' => CodeConstant::NOT_DELETED,
         ];
     }
-
     
     /**
      * 検索クエリ生成処理

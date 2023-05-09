@@ -19,9 +19,8 @@
   <table class="table">
     <thead>
       <tr>
-        <th scope="col">リーグ名</th>
-        <th scope="col">国名</th>
-        <th scope="col"></th>
+        <th scope="col">チーム名名</th>
+        <th scope="col">スタジアム</th>
         <th scope="col"></th>
         <th scope="col"></th>
       </tr>
@@ -30,15 +29,12 @@
       <?php foreach ($result['response']['data'] as $row): ?>
         <tr>
             <td><?php echo $row['name']; ?></td>
-            <td><?php echo $row['country']['converted_name']; ?></td>
+            <td><?php echo $row['studium']; ?></td>
             <td>
-                <a href="/football/rank/view/<?php echo $row['id']; ?>" class="btn btn-secondary">順位表</a>
+                <a href="/football/matchShedules/view/<?php echo $row['id']; ?>" class="btn btn-secondary">試合日程</a>
             </td>
             <td>
-                <a href="/football/teams/index?league_id=<?php echo $row['id']; ?>" class="btn btn-primary">チーム一覧</a>
-            </td>
-            <td>
-                <a href="/football/match-schedules/index?league_id=<?php echo $row['id']; ?>" class="btn btn-secondary">試合日程</a>
+                <a href="/football/matchShedules/index/?team_id=<?php echo $row['id']; ?>" class="btn btn-secondary">選手一覧</a>
             </td>
         </tr>
       <?php endforeach; ?>

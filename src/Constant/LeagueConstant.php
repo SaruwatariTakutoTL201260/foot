@@ -94,7 +94,7 @@ class LeagueConstant
     ];
 
     /**
-     * リーグ名リスト
+     * 国名リスト
      * 
      * @var string[]
      */

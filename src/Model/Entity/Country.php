@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
+use App\Constant\CountryConstant;
 use Cake\ORM\Entity;
 
 /**
@@ -28,4 +29,27 @@ class Country extends Entity
         '*' => true,
         'id' => false,
     ];
+
+    /**
+     * 仮想属性
+     * 
+     * @ver array
+     */
+    protected $_virtual = [
+        'converted_name',
+    ];
+
+    /**
+     * 国名のアクセサー
+     * 
+     * @return null|string
+     */
+    protected function _getConvertedName(): ?string
+    {
+        if (!isset($this->id)) {
+            return null;
+        }
+
+        return CountryConstant::COUNTRY_LIST[$this->id];
+    }
 }

@@ -273,6 +273,50 @@ class MatchShedulesTable extends Table
     }
 
     /**
+     * 取得ID指定試合日程カスタムファインダー
+     * 
+     * @param \Cake\ORM\Query $query ベースクエリ
+     * @param array $options パラメータ
+     * @return \Cake\ORM\Query 生成したクエリ
+     */
+    public function findByGetId(Query $query, array $options=[]): Query
+    {
+        return $query->where(function (QueryExpression $exp) use ($options) {
+            return $exp->eq('MatchShedules.get_id', $options['get_id']);
+        });
+    }
+
+    /**
+     * 審判ID指定試合日程カスタムファインダー
+     * 
+     * @param \Cake\ORM\Query $query ベースクエリ
+     * @param array $options パラメータ
+     * @return \Cake\ORM\Query 生成したクエリ
+     */
+    public function findByRefereeId(Query $query, array $options=[]): Query
+    {
+        return $query->where(function (QueryExpression $exp) use ($options) {
+            return $exp->eq('MatchShedules.referee_id', $options['referee_id']);
+        });
+    }
+
+    /**
+     * スタジアムID指定試合日程カスタムファインダー
+     * 
+     * @param \Cake\ORM\Query $query ベースクエリ
+     * @param array $options パラメータ
+     * @return \Cake\ORM\Query 生成したクエリ
+     */
+    public function findByStudiumId(Query $query, array $options=[]): Query
+    {
+        return $query->where(function (QueryExpression $exp) use ($options) {
+            return $exp->eq('MatchShedules.studium_id', $options['studium_id']);
+        });
+    }
+
+
+
+    /**
      * LeaguesとのContain
      *
      * 条件：Leaguesテーブルのis_deletedがtrue(削除フラグが有効)の場合

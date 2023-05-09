@@ -6,9 +6,25 @@ use App\Constant\LeagueConstant;
 use Cake\Console\Shell;
 use Cake\Http\Client;
 use App\Constant\OpenApiConstant;
+use App\Facade\OpenApi\MatchScheduleFacade;
+use Cake\Utility\Hash;
 
 class MatchScheduleShell extends Shell
 {
+    protected MatchScheduleFacade $matchScheduleFacade;
+
+    /**
+     * コンストラクタ
+     * 
+     * リーグIDを引数とする
+     */
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->matchScheduleFacade = new MatchScheduleFacade();
+    }
+
     public function main()
     {
         $http = new Client();
@@ -37,10 +53,22 @@ class MatchScheduleShell extends Shell
         // responseのbodyを配列として代入
         $arrayResponse = json_decode((string)$response->getBody(), true);
 
-        
-        dd($arrayResponse);
+        if (!Hash::check($arrayResponse, 'results')) {
+            // 499(TimeOutもしくはサーバーエラー)
+            echo $arrayResponse['message'];
+            exit;
+        }
+
+        if (empty($arrayResponse['response'])) {
+            // 対象のデータが見つからない場合
+            echo '対象のデータが見つかりません';
+            exit;
+        }
+
+        $result = $this->matchScheduleFacade->executeAdd($arrayResponse["response"], (int)$leagueId);
 
         // レスポンスボディを出力
-        echo $response->getBody();
+        echo $result['response']['code'];
+        echo $result['response']['data'];
     }
 }

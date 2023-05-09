@@ -7,6 +7,8 @@ use App\Facade\OpenApi\TeamFacade;
 use Cake\TestSuite\TestCase;
 use App\Model\Table\TeamsTable;
 
+use function PHPUnit\Framework\assertContains;
+
 /**
  * TeamFacadeTest
  * 
@@ -130,5 +132,8 @@ class TeamFacadeTest extends TestCase
               ],
             
         ], 1);
+
+        $this->assertIsArray($result);
+        $this->assertEquals('200', $result['response']['code']);
     }
 }

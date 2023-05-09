@@ -7,8 +7,8 @@
     <div class="card mb-3">
       <div class="card-body">
         <h5 class="card-title"><?php echo $row['name']; ?></h5>
-        <a href="/football/teams/view/<?php echo $row['id']; ?>" class="btn btn-primary d-block mb-2">チーム詳細</a>
-        <a href="/football/matchShedules/view/<?php echo $row['id']; ?>" class="btn btn-secondary d-block">試合日程</a>
+        <!-- <a href="/football/teams/view/<?php echo $row['id']; ?>" class="btn btn-primary d-block mb-2">チーム詳細</a>
+        <a href="/football/matchShedules/view/<?php echo $row['id']; ?>" class="btn btn-secondary d-block">試合日程</a> -->
       </div>
     </div>
   <?php endforeach; ?>
@@ -16,30 +16,25 @@
 
 <!-- タブレット・PC用画面 -->
 <div class="d-none d-md-block">
+  <h1>試合日程</h1>
   <table class="table">
     <thead>
       <tr>
-        <th scope="col">リーグ名</th>
-        <th scope="col">国名</th>
-        <th scope="col"></th>
-        <th scope="col"></th>
+        <th scope="col">ホームチーム</th>
+        <th scope="col">アウェイチーム</th>
+        <th scope="col">試合状況</th>
+        <th scope="col">スタジアム</th>
         <th scope="col"></th>
       </tr>
     </thead>
     <tbody>
       <?php foreach ($result['response']['data'] as $row): ?>
         <tr>
-            <td><?php echo $row['name']; ?></td>
-            <td><?php echo $row['country']['converted_name']; ?></td>
-            <td>
-                <a href="/football/rank/view/<?php echo $row['id']; ?>" class="btn btn-secondary">順位表</a>
-            </td>
-            <td>
-                <a href="/football/teams/index?league_id=<?php echo $row['id']; ?>" class="btn btn-primary">チーム一覧</a>
-            </td>
-            <td>
-                <a href="/football/match-schedules/index?league_id=<?php echo $row['id']; ?>" class="btn btn-secondary">試合日程</a>
-            </td>
+            <td><?php echo $row['converted_match_status']; ?></td>
+            <td><?php echo $row['team']['name']; ?><br><?php echo $row['home_score']; ?></td>
+            <td><?php echo $row['away_team']['name']; ?><br><?php echo $row['away_score']; ?></td>
+            <td><?php echo $row['team']['studium']; ?></td>
+            <td><a href="/football/match-contents/index?match_id=<?php echo $row['id']; ?>" class="btn btn-secondary">詳細</a></td>
         </tr>
       <?php endforeach; ?>
     </tbody>

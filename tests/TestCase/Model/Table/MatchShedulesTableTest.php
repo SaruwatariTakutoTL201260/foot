@@ -282,6 +282,69 @@ class MatchShedulesTableTest extends TestCase
     }
 
     /**
+     * 取得ID指定カスタムファインダーテスト
+     * 
+     * @return void
+     */
+    public function testFindByGetId(): void
+    {
+        $query = $this->MatchShedules->find()
+            ->find('byGetID', [
+                'get_id' => 1,
+            ]);
+
+        $queryString = AssertionLibrary::getBindingQuery($query);
+
+        $this->assertRegExpSql(
+            'MatchShedules.get_id = 1',
+            $queryString,
+            true,
+        );
+    }
+
+    /**
+     * 審判ID指定カスタムファインダーテスト
+     * 
+     * @return void
+     */
+    public function testFindByRefereeId(): void
+    {
+        $query = $this->MatchShedules->find()
+            ->find('byRefereeId', [
+                'referee_id' => 1,
+            ]);
+
+        $queryString = AssertionLibrary::getBindingQuery($query);
+
+        $this->assertRegExpSql(
+            'MatchShedules.referee_id = 1',
+            $queryString,
+            true,
+        );
+    }
+
+    /**
+     * スタジアムID指定カスタムファインダーテスト
+     * 
+     * @return void
+     */
+    public function testFindByStudiumId(): void
+    {
+        $query = $this->MatchShedules->find()
+            ->find('byStudiumId', [
+                'studium_id' => 1,
+            ]);
+
+        $queryString = AssertionLibrary::getBindingQuery($query);
+
+        $this->assertRegExpSql(
+            'MatchShedules.studium_id = 1',
+            $queryString,
+            true,
+        );
+    }
+
+    /**
      * containテスト
      * 
      * LeaguesとTeams(home,away)とのcontainを想定

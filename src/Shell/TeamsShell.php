@@ -56,6 +56,6 @@ class TeamsShell extends Shell
         $result = $this->teamFacade->executeAdd($arrayResponse["response"], $leagueId);
 
         // レスポンスボディを出力
-        echo $result['response']['code'];
+        echo $result['response']['data'];
     }
 }

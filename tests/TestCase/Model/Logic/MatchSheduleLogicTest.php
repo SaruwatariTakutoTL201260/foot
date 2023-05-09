@@ -8,6 +8,8 @@ use App\Model\Logic\MatchSheduleLogic;
 use App\Model\Table\MatchShedulesTable;
 use Cake\TestSuite\TestCase;
 
+use function PHPUnit\Framework\assertIsArray;
+
 /**
  * MatchSheduleLogicTest
  *
@@ -219,7 +221,7 @@ class MatchSheduleLogicTest extends TestCase
     }
 
     /**
-     * 条件クエリ生成処理テスト-byLeagues
+     * 条件クエリ生成処理テスト-byLeagueId
      * 
      * @return void
      */
@@ -233,6 +235,66 @@ class MatchSheduleLogicTest extends TestCase
 
         $this->assertRegExpSql(
             "MatchShedules.league_id = 1",
+            $queryString,
+            true
+        );
+    }
+
+    /**
+     * 条件クエリ生成処理テスト-byGetId
+     * 
+     * @return void
+     */
+    public function testGenerateCoundiotnByGetId(): void
+    {
+        $query = $this->logic->generateQuery([
+            'get_id' => 1,
+        ]);
+
+        $queryString = AssertionLibrary::getBindingQuery($query);
+
+        $this->assertRegExpSql(
+            "MatchShedules.get_id = 1",
+            $queryString,
+            true
+        );
+    }
+
+    /**
+     * 条件クエリ生成処理テスト-byRefereeId
+     * 
+     * @return void
+     */
+    public function testGenerateCoundiotnByRefereeId(): void
+    {
+        $query = $this->logic->generateQuery([
+            'referee_id' => 1,
+        ]);
+
+        $queryString = AssertionLibrary::getBindingQuery($query);
+
+        $this->assertRegExpSql(
+            "MatchShedules.referee_id = 1",
+            $queryString,
+            true
+        );
+    }
+
+    /**
+     * 条件クエリ生成処理テスト-byStudiumId
+     * 
+     * @return void
+     */
+    public function testGenerateCoundiotnByStudiumId(): void
+    {
+        $query = $this->logic->generateQuery([
+            'studium_id' => 1,
+        ]);
+
+        $queryString = AssertionLibrary::getBindingQuery($query);
+
+        $this->assertRegExpSql(
+            "MatchShedules.studium_id = 1",
             $queryString,
             true
         );
@@ -338,6 +400,116 @@ class MatchSheduleLogicTest extends TestCase
 
         $this->assertIsArray($result);
         $this->assertEquals('204', $result['code']);
+    }
+
+    /**
+     * 試合日程一括登録処理-200
+     * 
+     * @return void
+     */
+    public function testInsertAllSuccess(): void
+    {
+        $result = $this->logic->insertAll([
+            [
+                'league_id' => 1,
+                'home_team_id' => 1,
+                'away_team_id' => 1,
+                'match_date' => '2023-05-04 20:07:29',
+                'home_score' => 3,
+                'away_score' => 1,
+                'match_status' => 2,
+                'referee_id' => 1,
+                'studium_id' => 1,
+                'get_id' => 1,
+            ],
+            [
+                'league_id' => 2,
+                'home_team_id' => 2,
+                'away_team_id' => 2,
+                'match_date' => '2023-05-14 20:07:29',
+                'home_score' => 4,
+                'away_score' => 1,
+                'match_status' => 1,
+                'is_deleted' => 0,
+                'referee_id' => 2,
+                'studium_id' => 2,
+                'get_id' => 2,
+            ],
+        ]);
+
+        $this->assertIsArray($result);
+        $this->assertEquals('200', $result['code']);
+    }
+
+    /**
+     * 試合日程一括登録処理-500
+     * 
+     * @return void
+     */
+    public function testInsertAllValidationError(): void
+    {
+        $result = $this->logic->insertAll([
+            [
+                'league_id' => 999,
+                'home_team_id' => 1,
+                'away_team_id' => 1,
+                'match_date' => '2023-05-04 20:07:29',
+                'home_score' => 3,
+                'away_score' => 1,
+                'match_status' => 2,
+                'referee_id' => 1,
+                'studium_id' => 1,
+                'get_id' => 1,
+            ],
+            [
+                'league_id' => 2,
+                'home_team_id' => 2,
+                'away_team_id' => 2,
+                'match_date' => '2023-05-14 20:07:29',
+                'home_score' => 4,
+                'away_score' => 1,
+                'match_status' => 1,
+                'is_deleted' => 0,
+                'referee_id' => 2,
+                'studium_id' => 2,
+                'get_id' => 2,
+            ],
+        ]);
+
+        $this->assertIsArray($result);
+        $this->assertEquals('500', $result['code']);
+    }
+
+    /**
+     * 登録パラメータ整形処理
+     * 
+     * @return void
+     */
+    public function testMappingParams(): void
+    {
+        $params = [
+            'fixture' => [
+                'id' => (int) 868321,
+                'referee' => null,
+                'date' => '2023-05-29T00:30:00+09:00',
+                'timestamp' => (int) 1685287800,
+                'venue' => [
+                    'id' => (int) 8560,
+                ],
+                'status' => [
+                    'short' => 'NS',
+                ]
+            ],
+            'goals' => [
+                'home' => null,
+                'away' => null
+            ],      
+        ];
+
+        // 処理実行
+        $result = $this->logic->mappingParams($params, 1, 1, 1);
+
+        assertIsArray($result);
     }
 } 
 

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
+use App\Constant\MatchScheduleConstant;
 use Cake\ORM\Entity;
 
 /**
@@ -39,4 +40,27 @@ class MatchShedule extends Entity
         '*' => true,
         'id' => false,
     ];
+
+    /**
+     * 仮想属性
+     * 
+     * @ver array
+     */
+    protected $_virtual = [
+        'match_stasus',
+    ];
+
+    /**
+     * 国名のアクセサー
+     * 
+     * @return null|string
+     */
+    protected function _getConvertedMatchStatus(): ?string
+    {
+        if (!isset($this->match_status)) {
+            return null;
+        }
+
+        return MatchScheduleConstant::MATCH_STATUS_LIST[$this->match_status];
+    }
 }

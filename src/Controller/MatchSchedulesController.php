@@ -4,24 +4,23 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Controller\AppController;
-use App\Facade\LeagueFacade;
+use App\Facade\MatchSheduleFacade;
 use Cake\Event\EventInterface;
-use Cake\Log\Log;
 
 /**
- * リーグController
+ * 試合日程Controller
  * 
  * @package App\Controller
- * @property \App\Facade\LeagueFacade $facade
+ * @property \App\Facade\MatchSheduleFacade $facade
  */
-class LeaguesController extends AppController
+class MatchSchedulesController extends AppController
 {
     /**
-     * リーグFacade
+     * 試合日程Facade
      * 
-     * @var \App\Facade\LeagueFacade
+     * @var \App\Facade\MatchSheduleFacade
      */
-    protected LeagueFacade $facade;
+    protected MatchSheduleFacade $facade;
 
     /**
      * 初期化
@@ -34,7 +33,7 @@ class LeaguesController extends AppController
         parent::initialize();
 
         // Facade設定
-        $this->facade = new LeagueFacade();
+        $this->facade = new MatchSheduleFacade();
     }
 
     /**
@@ -48,7 +47,7 @@ class LeaguesController extends AppController
     }
 
     /**
-     * 企業一覧データ取得
+     * 試合日程一覧取得
      *
      * @return 
      */
@@ -57,8 +56,15 @@ class LeaguesController extends AppController
         // アクセス許可メソッド判定
         $this->request->allowMethod(['get']);
 
-        $result = $this->facade->executeIndex([]);
+        // クエリを設定
+        $condition = $this->request->getQueryParams();
 
+        if (isset($condition['league_id'])) {
+            $condition['league_id'] = (int)$condition['league_id'];
+        }
+
+        $result = $this->facade->executeIndex($condition);
+// dd($result);
         // 取得した処理結果を返す
         $this->set('result', $result);
     }
